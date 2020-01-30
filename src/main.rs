@@ -5,10 +5,10 @@ use combine::parser::byte::hex_digit;
 use combine::{choice, token};
 use combine::{ParseError, Parser, RangeStream};
 
-fn mcc_payload_item<'a, I: 'a>() -> impl Parser<I, Output = Either<u8, &'static [u8]>>
+fn mcc_payload_item<'a, I: 'a>() -> impl Parser<Input = I, Output = Either<u8, &'static [u8]>>
 where
-    I: RangeStream<Token = u8, Range = &'a [u8]>,
-    I::Error: ParseError<I::Token, I::Range, I::Position>,
+    I: RangeStream<Item = u8, Range = &'a [u8]>,
+    I::Error: ParseError<I::Item, I::Range, I::Position>,
 {
     choice!(
         token(b'G').map(|_| Either::Right([0xfau8, 0x00, 0x00].as_ref())),
